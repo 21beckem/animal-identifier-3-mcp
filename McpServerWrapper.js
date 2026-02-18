@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { createMcpExpressApp } from "@modelcontextprotocol/sdk/server/express.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import express from 'express';
 import cors from 'cors';
 
 
@@ -14,7 +14,8 @@ export default class McpServerWrapper {
         this.version = version ?? '1.0.0';
         this.port = port ?? 3000;
         
-        this.app = createMcpExpressApp();
+        this.app = express();
+        this.app.use(express.json());
         this.app.use(cors());
         this.app.all("/mcp", this.handleMcpRequest.bind(this));
         this.setupServer = setupServerFunc;
